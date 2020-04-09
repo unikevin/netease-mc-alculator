@@ -1,0 +1,217 @@
+
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>收益计算器 · uni_kevin</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <meta name="theme-color" content="#563d7c">
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+        .container {
+            max-width: 960px;
+        }
+
+        .lh-condensed { line-height: 1.25; }
+    </style>
+</head>
+<body class="bg-light">
+<div class="container">
+    <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="https://webinput.nie.netease.com/img/mc/logo.png/200" alt="">
+        <h2>收益计算器</h2>
+        <p class="lead">For 网易我的世界开发者平台</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">统计</span>
+                <span id="length" class="badge badge-secondary badge-pill">0</span>
+            </h4>
+            <ul class="list-group mb-3">
+                <div id="all">
+                </div>
+                <li class="list-group-item d-flex justify-content-between bg-light">
+                    <div class="text-success">
+                        <h6 id="total_name" class="my-0">总计</h6>
+                        <small>你能获得的纯RMB</small>
+                    </div>
+                    <span id="total" class="text-success"><strong>￥0</strong></span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-8 order-md-1">
+            <h4 class="mb-3">计算收益</h4>
+            <form id="main" class="needs-validation" novalidate>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="plate_type">PC/PE</label>
+                        <select class="custom-select d-block w-100" id="plate_type" required>
+                            <option value="">选择分区</option>
+                            <option>PC</option>
+                            <option>PE</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            请选择收益来源分区
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="amount_type">计算参数</label>
+                        <select class="custom-select d-block w-100" id="amount_type" required>
+                            <option value="">选择计算参数</option>
+                            <option>未提取收益</option>
+                            <option>钻石</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            请选择计算参数类型
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="count">原生数量</label>
+                    <div class="input-group">
+
+                        <div class="input-group-prepend">
+                            <div id="amount_type_show" class="input-group-text">请选择</div>
+                        </div>
+                        <input type="number" class="form-control" id="count" placeholder="请输入原生数字, 钻石无需去零" required>
+                        <div class="invalid-feedback" style="width: 100%;">
+                            不输入你算个锤子
+                        </div>
+                    </div>
+                </div>
+                <hr class="mb-4">
+                <div class="d-block my-3">
+                    <div class="custom-control custom-radio">
+                        <input id="ct1" value="ct1" name="CalculationType" type="radio" class="custom-control-input" checked required>
+                        <label class="custom-control-label" for="ct1">我只有一样收益, 直接出结果</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input id="ct2" value="ct2" name="CalculationType" type="radio" class="custom-control-input" required>
+                        <label class="custom-control-label" for="ct2">我需要计算多样, 添加到统计区</label>
+                    </div>
+                </div>
+                <hr class="mb-4">
+
+                <button class="btn btn-primary btn-lg btn-block" type="submit">计算</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2020 Powered By uni_kevin</p>
+        <p class="mb-1">QQ: 3407053348</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="https://mcdev.webapp.163.com/">网易开发者平台</a></li>
+            <li class="list-inline-item"><a href="http://mc.163.com/mcstudio/">开发者工具</a></li>
+            <li class="list-inline-item"><a href="http://mc.netease.com/">网易MC论坛</a></li>
+        </ul>
+    </footer>
+</div>
+<script>
+
+    $("#amount_type").change(function(){
+        $("#amount_type_show").text($("#amount_type").val() === "" ? "请选择" : $("#amount_type").val())
+    });
+    var array = new Array();
+    function getTotal() {
+        var t = 0;
+        array.forEach(function (a) {
+            t = a + t;
+        })
+        return t;
+    }
+    function add_count(count) {
+        array.push(count)
+        $("#length").text(array.length)
+        $("#total_name").text(getTotal() >= 1000 ? "总计(可提现)" : "总计(不可提现)")
+        $("#total").html("<strong>￥" + Math.floor(getTotal()) + "</strong>")
+        $("#all").append('\n' +
+            '                <li class="list-group-item d-flex justify-content-between lh-condensed">\n' +
+            '                    <div>\n' +
+            '                        <h6 class="my-0">' + $("#plate_type").val() + '区</h6>\n' +
+            '                        <small class="text-muted">' + $("#amount_type").val()  + ' ' + $("#count").val() + '</small>\n' +
+            '                    </div>\n' +
+            '                    <span class="text-muted">￥' + Math.floor(count)  + '</span>\n' +
+            '                </li>');
+
+    }
+    (function () {
+        'use strict'
+
+        window.addEventListener('load', function () {
+            var forms = document.getElementsByClassName('needs-validation')
+
+            Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault()
+                        //event.stopPropagation()
+                    }else{
+                        event.preventDefault()
+                        if ($("#amount_type").get(0).selectedIndex == 1) { //收益
+                            var c = $("#count").val()
+                            add_count(c <= 800 ? c : (c - 800) * 0.8 + 800)
+                        }
+                        if ($("#amount_type").get(0).selectedIndex == 2) { //钻石
+                            var c = $("#count").val()
+                            if ($("#plate_type").val() === "PC") {
+                                add_count(c / 100 * 0.56)
+                            }
+                            if ($("#plate_type").val() === "PE") {
+                                add_count(c / 100 * 0.38)
+                            }
+                        }
+
+                        if ($('input[name="CalculationType"]:checked').val() === "ct1") {
+                            swal({
+                                title: "计算完成",
+                                text: "你将获得 " + Math.floor(getTotal()) + " 元净收益!",
+                                icon: "success",
+                                button: "Aww耶!",
+                            });
+                            array = new Array()
+                        }
+                        if ($('input[name="CalculationType"]:checked').val() === "ct2") {
+                            setTimeout(function () {
+                                $("#plate_type").val("")
+                                $("#amount_type").val("")
+                                $("#amount_type_show").text("请选择")
+                                $("#count").val("")
+                                form.classList.remove('was-validated')
+                            }, 1000)
+                        }
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        }, false)
+    }())
+</script></body>
+</html>
